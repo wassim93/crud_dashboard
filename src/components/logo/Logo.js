@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { forwardRef } from "react";
+import { Link as RouterLink } from "react-router-dom";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Box, Link } from '@mui/material';
+import { useTheme } from "@mui/material/styles";
+import { Box, Link } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -31,44 +31,24 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
       ref={ref}
       component="div"
       sx={{
-        width: 40,
-        height: 40,
-        display: 'inline-flex',
+        width: 100,
+        height: 100,
+        display: "inline-flex",
         ...sx,
       }}
       {...other}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 512 512">
-        <defs>
-          <linearGradient id="BG1" x1="100%" x2="50%" y1="9.946%" y2="50%">
-            <stop offset="0%" stopColor={PRIMARY_DARK} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
-          </linearGradient>
-
-          <linearGradient id="BG2" x1="50%" x2="50%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={PRIMARY_LIGHT} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
-          </linearGradient>
-
-          <linearGradient id="BG3" x1="50%" x2="50%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={PRIMARY_LIGHT} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
-          </linearGradient>
-        </defs>
-
-        <g fill={PRIMARY_MAIN} fillRule="evenodd" stroke="none" strokeWidth="1">
-          <path
-            fill="url(#BG1)"
-            d="M183.168 285.573l-2.918 5.298-2.973 5.363-2.846 5.095-2.274 4.043-2.186 3.857-2.506 4.383-1.6 2.774-2.294 3.939-1.099 1.869-1.416 2.388-1.025 1.713-1.317 2.18-.95 1.558-1.514 2.447-.866 1.38-.833 1.312-.802 1.246-.77 1.18-.739 1.111-.935 1.38-.664.956-.425.6-.41.572-.59.8-.376.497-.537.69-.171.214c-10.76 13.37-22.496 23.493-36.93 29.334-30.346 14.262-68.07 14.929-97.202-2.704l72.347-124.682 2.8-1.72c49.257-29.326 73.08 1.117 94.02 40.927z"
-          />
-          <path
-            fill="url(#BG2)"
-            d="M444.31 229.726c-46.27-80.956-94.1-157.228-149.043-45.344-7.516 14.384-12.995 42.337-25.267 42.337v-.142c-12.272 0-17.75-27.953-25.265-42.337C189.79 72.356 141.96 148.628 95.69 229.584c-3.483 6.106-6.828 11.932-9.69 16.996 106.038-67.127 97.11 135.667 184 137.278V384c86.891-1.611 77.962-204.405 184-137.28-2.86-5.062-6.206-10.888-9.69-16.994"
-          />
-          <path
-            fill="url(#BG3)"
-            d="M450 384c26.509 0 48-21.491 48-48s-21.491-48-48-48-48 21.491-48 48 21.491 48 48 48"
-          />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.0"
+        width="100"
+        height="100"
+        viewBox="0 0 512.000000 512.000000"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#ed1b24" stroke="none">
+          <path d="M4118 4670 c-140 -24 -248 -80 -349 -182 -193 -193 -225 -518 -74 -753 76 -119 245 -236 383 -264 132 -27 292 -4 417 62 87 46 203 164 249 254 84 167 89 363 13 533 -107 240 -385 393 -639 350z" />
+          <path d="M1750 3806 c-484 -77 -894 -339 -1167 -746 -329 -492 -367 -1144 -97 -1682 231 -462 674 -798 1181 -898 141 -28 377 -37 520 -20 915 108 1581 938 1482 1848 -55 514 -329 959 -764 1245 -171 112 -405 206 -605 242 -126 23 -434 29 -550 11z m485 -739 c337 -96 597 -357 687 -689 30 -110 33 -366 5 -466 -102 -372 -384 -644 -744 -718 -105 -22 -340 -15 -438 13 -204 58 -366 162 -491 316 -143 176 -224 397 -224 612 0 130 44 314 103 430 127 252 379 448 657 510 83 19 371 14 445 -8z" />
         </g>
       </svg>
     </Box>
@@ -79,7 +59,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   }
 
   return (
-    <Link to="/" component={RouterLink} sx={{ display: 'contents' }}>
+    <Link to="/" component={RouterLink} sx={{ display: "contents" }}>
       {logo}
     </Link>
   );
