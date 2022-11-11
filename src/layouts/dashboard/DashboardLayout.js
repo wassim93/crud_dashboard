@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 // @mui
 import { styled } from "@mui/material/styles";
 //
-import Header from "./header";
 import Nav from "./nav";
 
 // ----------------------------------------------------------------------
@@ -24,7 +23,7 @@ const Main = styled("div")(({ theme }) => ({
   paddingTop: APP_BAR_MOBILE + 24,
   paddingBottom: theme.spacing(10),
   [theme.breakpoints.up("lg")]: {
-    paddingTop: APP_BAR_DESKTOP + 24,
+    // paddingTop: APP_BAR_DESKTOP + 24,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
   },
@@ -37,8 +36,6 @@ export default function DashboardLayout() {
 
   return (
     <StyledRoot>
-      {/* <Header onOpenNav={() => setOpen(true)} /> */}
-
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
       <Main>

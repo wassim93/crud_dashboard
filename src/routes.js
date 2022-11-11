@@ -19,8 +19,6 @@ export default function Router() {
         { element: <Navigate to="/dashboard/incidents" />, index: true },
         { path: "incidents", element: <IncidentsPage /> },
         { path: "changes", element: <ChangesPage /> },
-        // { path: 'products', element: <ProductsPage /> },
-        // { path: 'blog', element: <BlogPage /> },
       ],
     },
     {

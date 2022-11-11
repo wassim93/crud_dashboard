@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogContentText, DialogTitle, Slide } from "@mui/material";
+import { Dialog, DialogTitle } from "@mui/material";
 import React from "react";
 
 export default function CustomDialog({ open, handleClose, title, children }) {
