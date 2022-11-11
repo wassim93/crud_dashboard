@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { filter } from "lodash";
 import { sentenceCase } from "change-case";
 import { useState } from "react";
@@ -21,6 +20,10 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  DialogContent,
+  DialogContentText,
+  TextField,
+  Box,
 } from "@mui/material";
 // components
 import Label from "../components/label";
@@ -30,6 +33,12 @@ import Scrollbar from "../components/scrollbar";
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
+import CustomDialog from "../components/dialog/CustomDialog";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import SaveButton from "../components/buttons/SaveButton";
+import CancelButton from "../components/buttons/CancelButton";
 
 // ----------------------------------------------------------------------
 
@@ -85,6 +94,21 @@ export default function ChangesPage() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [value, setValue] = useState(dayjs("2014-08-18T21:11:54"));
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
+  const handleClickOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -144,6 +168,10 @@ export default function ChangesPage() {
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
+  const handleCancel = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
     <>
       {/* <Helmet>
@@ -153,10 +181,10 @@ export default function ChangesPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Changes
+            Liste des Changes
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Change
+          <Button variant="contained" onClick={handleClickOpen} startIcon={<Iconify icon="eva:plus-fill" />}>
+            Ajouter une Change
           </Button>
         </Stack>
 
@@ -287,6 +315,26 @@ export default function ChangesPage() {
           Delete
         </MenuItem>
       </Popover>
+      <CustomDialog open={isDialogOpen} handleClose={handleClose} title={"Ajouter un change"}>
+        <Stack spacing={3} mx={2} my={2}>
+          <TextField type={"text"} required id="outlined-basic" label="Description" variant="outlined" multiline rows={6} />
+          <TextField required id="outlined-basic" label="Team" variant="outlined" />
+          <TextField required id="outlined-basic" label="Impact" variant="outlined" />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Date planification"
+              inputFormat="MM/DD/YYYY"
+              value={value}
+              onChange={handleChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <Stack direction="row" justifyContent="end" spacing={2}>
+            <CancelButton text="Cancel" handleClick={handleCancel} />
+            <SaveButton text={"Save"} />
+          </Stack>
+        </Stack>
+      </CustomDialog>
     </>
   );
 }

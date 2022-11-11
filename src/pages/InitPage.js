@@ -71,7 +71,7 @@ export default function InitPage() {
         {mdUp && (
           <StyledSection>
             <Typography align="center" variant="h2" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Oreedoo Soc
+              Ooreedoo Soc
             </Typography>
             <img src="/assets/logo.png" alt="login" />
           </StyledSection>
@@ -80,7 +80,7 @@ export default function InitPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Select an option to continue
+              Sélectionnez une option pour continuer
             </Typography>
 
             {/* <Typography variant="body2" sx={{ mb: 5 }}>
@@ -109,11 +109,35 @@ export default function InitPage() {
             </Divider> */}
 
             {/* <LoginForm /> */}
-            <Stack spacing={3}>
-              <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleChangesClick}>
+            <Stack spacing={3} my={5}>
+              <LoadingButton
+                sx={{
+                  background: "#ed1b24",
+                  "&:hover": {
+                    background: "#ec4545",
+                  },
+                }}
+                fullWidth
+                size="large"
+                // type="submit"
+                variant="contained"
+                onClick={handleChangesClick}
+              >
                 Changes
               </LoadingButton>
-              <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleIncidentClick}>
+              <LoadingButton
+                sx={{
+                  background: "#ed1b24",
+                  "&:hover": {
+                    background: "#ec4545",
+                  },
+                }}
+                fullWidth
+                size="large"
+                // type="submit"
+                variant="contained"
+                onClick={handleIncidentClick}
+              >
                 Incidents
               </LoadingButton>
             </Stack>
