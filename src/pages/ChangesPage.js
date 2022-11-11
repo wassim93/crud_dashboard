@@ -43,11 +43,10 @@ import CancelButton from "../components/buttons/CancelButton";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: "name", label: "Name", alignRight: false },
-  { id: "company", label: "Company", alignRight: false },
-  { id: "role", label: "Role", alignRight: false },
-  { id: "isVerified", label: "Verified", alignRight: false },
-  { id: "status", label: "Status", alignRight: false },
+  { id: "team", label: "Team", alignRight: false },
+  { id: "impact", label: "Impact", alignRight: false },
+  { id: "date", label: "Date Planification", alignRight: false },
+  { id: "description", label: "Description", alignRight: false },
   { id: "" },
 ];
 
@@ -224,10 +223,6 @@ export default function ChangesPage() {
                         <TableCell align="left">{role}</TableCell>
 
                         <TableCell align="left">{isVerified ? "Yes" : "No"}</TableCell>
-
-                        <TableCell align="left">
-                          <Label color={(status === "banned" && "error") || "success"}>{sentenceCase(status)}</Label>
-                        </TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
