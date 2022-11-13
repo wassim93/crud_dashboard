@@ -1,5 +1,4 @@
 import { filter } from "lodash";
-import { sentenceCase } from "change-case";
 import { useState } from "react";
 // @mui
 import {
@@ -20,13 +19,8 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  DialogContent,
-  DialogContentText,
-  TextField,
-  Box,
 } from "@mui/material";
 // components
-import Label from "../components/label";
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
 // sections
@@ -34,11 +28,12 @@ import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
 import CustomDialog from "../components/dialog/CustomDialog";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import SaveButton from "../components/buttons/SaveButton";
 import CancelButton from "../components/buttons/CancelButton";
+import { Form, Formik } from "formik";
+import * as yup from "yup";
+import TextfieldWrapper from "../components/FormUI/Textfield";
+import ButtonWrapper from "../components/FormUI/Buttons";
+import DateTimePicker from "../components/FormUI/DatePicker";
 
 // ----------------------------------------------------------------------
 
@@ -95,11 +90,6 @@ export default function ChangesPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [value, setValue] = useState(dayjs("2014-08-18T21:11:54"));
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
 
   const handleClickOpen = () => {
     setIsDialogOpen(true);
@@ -169,6 +159,20 @@ export default function ChangesPage() {
 
   const handleCancel = () => {
     setIsDialogOpen(false);
+  };
+
+  const validationSchema = yup.object({
+    description: yup.string("Enter your description").required("Description is required"),
+    team: yup.string("Enter your team").required("Team is required"),
+    impact: yup.string("Enter your impact").required("Impact is required"),
+    dateP: yup.date().required("Date Required"),
+  });
+
+  const initialValues = {
+    description: "",
+    team: "",
+    impact: "",
+    dateP: "",
   };
 
   return (
@@ -307,24 +311,38 @@ export default function ChangesPage() {
         </MenuItem>
       </Popover>
       <CustomDialog open={isDialogOpen} handleClose={handleClose} title={"Ajouter un change"}>
-        <Stack spacing={3} mx={2} my={2}>
-          <TextField type={"text"} required id="outlined-basic" label="Description" variant="outlined" multiline rows={6} />
-          <TextField required id="outlined-basic" label="Team" variant="outlined" />
-          <TextField required id="outlined-basic" label="Impact" variant="outlined" />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DesktopDatePicker
-              label="Date planification"
-              inputFormat="MM/DD/YYYY"
-              value={value}
-              onChange={handleChange}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-          <Stack direction="row" justifyContent="end" spacing={2}>
-            <CancelButton text="Cancel" handleClick={handleCancel} />
-            <SaveButton text={"Save"} />
-          </Stack>
-        </Stack>
+        <Formik
+          initialValues={{
+            ...initialValues,
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+        >
+          <Form>
+            <Stack spacing={3} mx={2} my={2}>
+              <TextfieldWrapper name="description" label="Description" multiline rows={6} />
+              <TextfieldWrapper name="team" label="Team" />
+              <TextfieldWrapper name="impact" label="Impact" />
+              <DateTimePicker name="dateP" />
+
+              <Stack direction="row" justifyContent="end" spacing={2}>
+                <CancelButton text="Cancel" handleClick={handleCancel} />
+                <ButtonWrapper
+                  sx={{
+                    background: "#43C58A",
+                    "&:hover": {
+                      background: "#3AE6A2",
+                    },
+                  }}
+                >
+                  Save
+                </ButtonWrapper>
+              </Stack>
+            </Stack>
+          </Form>
+        </Formik>
       </CustomDialog>
     </>
   );

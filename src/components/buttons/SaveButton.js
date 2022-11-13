@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "@mui/material";
 
-export default function SaveButton({ text, backgroundColor, hoverBackgroundColor }) {
+export default function SaveButton({ text, backgroundColor, hoverBackgroundColor, type, onClick }) {
   return (
     <Button
       sx={{
@@ -11,6 +11,8 @@ export default function SaveButton({ text, backgroundColor, hoverBackgroundColor
           background: { hoverBackgroundColor },
         },
       }}
+      type={type}
+      onClick={onClick}
       variant="contained"
     >
       {text}
@@ -22,9 +24,12 @@ SaveButton.propTypes = {
   text: PropTypes.string.isRequired,
   backgroundColor: PropTypes.string,
   hoverBackgroundColor: PropTypes.string,
+  type: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
 };
 
 SaveButton.defaultProps = {
   backgroundColor: "#43C58A",
   hoverBackgroundColor: "#3AE6A2",
+  type: "button",
 };
