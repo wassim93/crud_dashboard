@@ -1,26 +1,33 @@
+import TeamComponent from "../components/pages-components/changes-page-component/TeamComponent";
+
 export const changeCells = [
   {
     id: "team",
     label: "Team",
-    type: "text",
+    type: "component",
+    component: TeamComponent,
+    sortable: true,
     dbName: "team",
   },
   {
     id: "impact",
     label: "Impact",
     type: "text",
+    sortable: true,
     dbName: "impact",
   },
   {
     id: "date",
     label: "Date Planification",
     type: "date",
+    sortable: true,
     dbName: "date",
   },
   {
     id: "description",
     label: "Description",
     type: "text",
+    sortable: true,
     dbName: "description",
   },
 ];

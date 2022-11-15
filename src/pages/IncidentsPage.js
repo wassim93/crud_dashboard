@@ -27,9 +27,10 @@ import Label from "../components/label";
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
 // sections
-import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
+import { UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
+import TableHeader from "../components/datatable.js/TableHeader";
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +56,9 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
@@ -166,7 +169,7 @@ export default function IncidentsPage() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <TableHeader
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}

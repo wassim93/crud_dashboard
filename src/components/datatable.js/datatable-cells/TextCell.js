@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function TextCell(props) {
-  return <div>TextCell</div>;
+function TextCell({ data }) {
+  return <>{data}</>;
 }
 
 TextCell.propTypes = {};

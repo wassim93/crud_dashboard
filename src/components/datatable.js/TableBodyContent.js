@@ -1,23 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox, TableCell, TableRow } from "@mui/material";
+import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
 import TextCell from "./datatable-cells/TextCell";
 import DateCell from "./datatable-cells/DateCell";
 import ActionsCell from "./datatable-cells/ActionsCell";
 
-function TableBodyContent({ cells, data, hasCheckbox, hasActions, handleActionClick }) {
+function TableBodyContent({ cells, data, hasCheckbox, updateSelectedAction, hasActions, handleActionClick }) {
   return (
-    <>
+    <TableBody>
       {data.map((row, index) => (
-        <TableRow hover tabIndex={-1} key={index}>
+        <TableRow hover key={index}>
           {hasCheckbox && (
             <TableCell padding="checkbox">
-              {/* <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} /> */}
-              <Checkbox />
+              <Checkbox onChange={() => updateSelectedAction(row)} />
             </TableCell>
           )}
-          {cells.map((cell) => (
-            <>
+          {cells.map((cell, index) => (
+            <React.Fragment key={cell.type + "_" + index}>
               {cell.type === "text" && (
                 <TableCell align="left">
                   <TextCell data={row[cell.dbName]} />
@@ -28,7 +27,12 @@ function TableBodyContent({ cells, data, hasCheckbox, hasActions, handleActionCl
                   <DateCell data={row[cell.dbName]} />
                 </TableCell>
               )}
-            </>
+              {cell.type === "component" && (
+                <TableCell>
+                  <cell.component data={row[cell.dbName]} />
+                </TableCell>
+              )}
+            </React.Fragment>
           ))}
           {hasActions && (
             <TableCell align="right">
@@ -37,7 +41,7 @@ function TableBodyContent({ cells, data, hasCheckbox, hasActions, handleActionCl
           )}
         </TableRow>
       ))}
-    </>
+    </TableBody>
   );
 }
 

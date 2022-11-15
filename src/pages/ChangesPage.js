@@ -24,7 +24,7 @@ import {
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
 // sections
-import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
+import { UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
 import CustomDialog from "../components/dialog/CustomDialog";
@@ -34,6 +34,9 @@ import * as yup from "yup";
 import TextfieldWrapper from "../components/FormUI/Textfield";
 import ButtonWrapper from "../components/FormUI/Buttons";
 import DateTimePicker from "../components/FormUI/DatePicker";
+import TableHeader from "../components/datatable.js/TableHeader";
+import TableBodyContent from "../components/datatable.js/TableBodyContent";
+import { changeCells, changeData } from "../_mock/changes";
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +61,9 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
@@ -122,19 +127,20 @@ export default function ChangesPage() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
+  const handleClick = (data) => {
+    console.log(data);
+    // const selectedIndex = selected.indexOf(name);
+    // let newSelected = [];
+    // if (selectedIndex === -1) {
+    //   newSelected = newSelected.concat(selected, name);
+    // } else if (selectedIndex === 0) {
+    //   newSelected = newSelected.concat(selected.slice(1));
+    // } else if (selectedIndex === selected.length - 1) {
+    //   newSelected = newSelected.concat(selected.slice(0, -1));
+    // } else if (selectedIndex > 0) {
+    //   newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    // }
+    // setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -160,6 +166,7 @@ export default function ChangesPage() {
   const handleCancel = () => {
     setIsDialogOpen(false);
   };
+  const [selectedRow, setSelectedRow] = useState({});
 
   const validationSchema = yup.object({
     description: yup.string("Enter your description").required("Description is required"),
@@ -193,16 +200,27 @@ export default function ChangesPage() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <TableHeader
+                  cells={changeCells}
+                  hasCheckbox
+                  hasActions
                   order={order}
                   orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
+                  // headLabel={TABLE_HEAD}
                   rowCount={USERLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
-                <TableBody>
+                <TableBodyContent
+                  data={changeData}
+                  cells={changeCells}
+                  hasCheckbox
+                  updateSelectedAction={handleClick}
+                  hasActions
+                  handleActionClick={handleOpenMenu}
+                />
+                {/* <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, name, role, status, company, avatarUrl, isVerified } = row;
                     const selectedUser = selected.indexOf(name) !== -1;
@@ -241,9 +259,9 @@ export default function ChangesPage() {
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
-                </TableBody>
+                </TableBody> */}
 
-                {isNotFound && (
+                {/* {isNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -265,7 +283,7 @@ export default function ChangesPage() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )}
+                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>
