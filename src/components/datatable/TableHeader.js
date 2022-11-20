@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from "@mui/material";
-import TableRowLoader from "../loader/TableRowLoader";
 
 function TableHeader({ cells, hasCheckbox, hasActions, sortDirection, sortAction, sortBy, onSelectAllClick }) {
   return (
@@ -21,7 +20,7 @@ function TableHeader({ cells, hasCheckbox, hasActions, sortDirection, sortAction
             </TableSortLabel>
           </TableCell>
         ))}
-        {hasActions && <TableCell padding="normal">Action</TableCell>}
+        {hasActions && <TableCell padding="normal">Actions</TableCell>}
       </TableRow>
     </TableHead>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Paper, TableCell, TableRow, Typography } from "@mui/material";
 
 const NoDataAvailable = () => {
@@ -12,7 +11,7 @@ const NoDataAvailable = () => {
           }}
         >
           <Typography variant="body2" color={"error"}>
-            No data available
+            Pas de données disponibles
           </Typography>
         </Paper>
       </TableCell>
