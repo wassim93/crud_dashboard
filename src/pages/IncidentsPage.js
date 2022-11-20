@@ -26,11 +26,10 @@ import {
 import Label from "../components/label";
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
-// sections
-import { UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
-import TableHeader from "../components/datatable.js/TableHeader";
+import TableHeader from "../components/datatable/TableHeader";
+import SearchBar from "../components/search-bar/SearchBar";
 
 // ----------------------------------------------------------------------
 
@@ -56,9 +55,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
@@ -164,7 +161,7 @@ export default function IncidentsPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <SearchBar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>

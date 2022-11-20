@@ -5,14 +5,14 @@ import TextCell from "./datatable-cells/TextCell";
 import DateCell from "./datatable-cells/DateCell";
 import ActionsCell from "./datatable-cells/ActionsCell";
 
-function TableBodyContent({ cells, data, hasCheckbox, updateSelectedAction, hasActions, handleActionClick }) {
+function TableBodyContent({ cells, data, hasCheckbox, updateSelectedAction, selectedRow, hasActions, handleActionClick, isAllSelected }) {
   return (
     <TableBody>
       {data.map((row, index) => (
         <TableRow hover key={index}>
           {hasCheckbox && (
             <TableCell padding="checkbox">
-              <Checkbox onChange={() => updateSelectedAction(row)} />
+              <Checkbox checked={isAllSelected} onChange={() => updateSelectedAction(row)} />
             </TableCell>
           )}
           {cells.map((cell, index) => (

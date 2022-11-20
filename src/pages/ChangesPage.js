@@ -23,8 +23,6 @@ import {
 // components
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
-// sections
-import { UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
 import CustomDialog from "../components/dialog/CustomDialog";
@@ -34,19 +32,11 @@ import * as yup from "yup";
 import TextfieldWrapper from "../components/FormUI/Textfield";
 import ButtonWrapper from "../components/FormUI/Buttons";
 import DateTimePicker from "../components/FormUI/DatePicker";
-import TableHeader from "../components/datatable.js/TableHeader";
-import TableBodyContent from "../components/datatable.js/TableBodyContent";
+
 import { changeCells, changeData } from "../_mock/changes";
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: "team", label: "Team", alignRight: false },
-  { id: "impact", label: "Impact", alignRight: false },
-  { id: "date", label: "Date Planification", alignRight: false },
-  { id: "description", label: "Description", alignRight: false },
-  { id: "" },
-];
+import TableHeader from "../components/datatable/TableHeader";
+import TableBodyContent from "../components/datatable/TableBodyContent";
+import SearchBar from "../components/search-bar/SearchBar";
 
 // ----------------------------------------------------------------------
 
@@ -61,9 +51,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function applySortFilter(array, comparator, query) {
@@ -84,17 +72,17 @@ export default function ChangesPage() {
 
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
 
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("");
 
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const handleClickOpen = () => {
     setIsDialogOpen(true);
@@ -112,23 +100,32 @@ export default function ChangesPage() {
     setOpen(null);
   };
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
+  const handleRequestSort = (key) => {
+    const isAsc = orderBy === key && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+    setOrderBy(key);
   };
 
   const handleSelectAllClick = (event) => {
+    // console.log(event);
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
+      setIsAllChecked(true);
+      // const newSelecteds = changeData.map((n) => n.id);
+      // console.log(newSelecteds);
+      // // setSelected(newSelecteds);
+      // setSelectedRow(newSelecteds);
+      setSelectedRows(changeData);
+
       return;
     }
-    setSelected([]);
+    setIsAllChecked(false);
+
+    setSelectedRows([]);
   };
 
   const handleClick = (data) => {
-    console.log(data);
+    setSelectedRows([...selectedRows, data]);
+
     // const selectedIndex = selected.indexOf(name);
     // let newSelected = [];
     // if (selectedIndex === -1) {
@@ -166,7 +163,6 @@ export default function ChangesPage() {
   const handleCancel = () => {
     setIsDialogOpen(false);
   };
-  const [selectedRow, setSelectedRow] = useState({});
 
   const validationSchema = yup.object({
     description: yup.string("Enter your description").required("Description is required"),
@@ -195,7 +191,7 @@ export default function ChangesPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <SearchBar numSelected={selectedRows.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -204,12 +200,10 @@ export default function ChangesPage() {
                   cells={changeCells}
                   hasCheckbox
                   hasActions
-                  order={order}
-                  orderBy={orderBy}
-                  // headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
+                  sortDirection={order}
+                  sortAction={handleRequestSort}
+                  sortBy={orderBy}
+                  isChecked={isAllChecked}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBodyContent
@@ -219,6 +213,7 @@ export default function ChangesPage() {
                   updateSelectedAction={handleClick}
                   hasActions
                   handleActionClick={handleOpenMenu}
+                  isAllSelected={isAllChecked}
                 />
                 {/* <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {

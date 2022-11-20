@@ -1,11 +1,8 @@
+import React from "react";
 import PropTypes from "prop-types";
-// @mui
 import { styled, alpha } from "@mui/material/styles";
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from "@mui/material";
-// component
-import Iconify from "../../../components/iconify";
-
-// ----------------------------------------------------------------------
+import Iconify from "../iconify";
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
   height: 96,
@@ -29,16 +26,7 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
     borderColor: `${alpha(theme.palette.grey[500], 0.32)} !important`,
   },
 }));
-
-// ----------------------------------------------------------------------
-
-UserListToolbar.propTypes = {
-  numSelected: PropTypes.number,
-  filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
-};
-
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+const SearchBar = ({ numSelected, filterName, onFilterName }) => {
   return (
     <StyledRoot
       sx={{
@@ -80,4 +68,11 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
       )}
     </StyledRoot>
   );
-}
+};
+SearchBar.propTypes = {
+  numSelected: PropTypes.number,
+  filterName: PropTypes.string,
+  onFilterName: PropTypes.func,
+};
+
+export default SearchBar;
