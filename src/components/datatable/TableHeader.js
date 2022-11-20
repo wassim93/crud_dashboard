@@ -3,17 +3,13 @@ import PropTypes from "prop-types";
 
 import { Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from "@mui/material";
 
-function TableHeader({ cells, hasCheckbox, hasActions, sortDirection, sortAction, sortBy, isChecked, rowCount, numSelected, onSelectAllClick }) {
+function TableHeader({ cells, hasCheckbox, hasActions, sortDirection, sortAction, sortBy, onSelectAllClick }) {
   return (
     <TableHead>
       <TableRow>
         {hasCheckbox && (
           <TableCell padding="checkbox">
-            <Checkbox
-              // indeterminate={numSelected > 0 && numSelected < rowCount}
-              // checked={isChecked}
-              onChange={onSelectAllClick}
-            />
+            <Checkbox onChange={onSelectAllClick} />
           </TableCell>
         )}
 
