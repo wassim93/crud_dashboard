@@ -12,7 +12,7 @@ const StyledRoot = styled(Toolbar)(({ theme }) => ({
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  width: 240,
+  width: 500,
   transition: theme.transitions.create(["box-shadow", "width"], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
@@ -38,13 +38,13 @@ const SearchBar = ({ numSelected, filterName, onFilterName }) => {
     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          {numSelected} changes selectionées
         </Typography>
       ) : (
         <StyledSearch
-          value={filterName}
+          // value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Cherchez une change"
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: "text.disabled", width: 20, height: 20 }} />

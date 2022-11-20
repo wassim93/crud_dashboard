@@ -1,5 +1,5 @@
 import { filter } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 // @mui
 import { Card, Table, Stack, Button, Popover, MenuItem, Container, Typography, TableContainer, TablePagination } from "@mui/material";
 // components
@@ -18,35 +18,7 @@ import { changeCells, changeData } from "../_mock/changes";
 import TableHeader from "../components/datatable/TableHeader";
 import TableBodyContent from "../components/datatable/TableBodyContent";
 import SearchBar from "../components/search-bar/SearchBar";
-
-// ----------------------------------------------------------------------
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
+import { debounce } from "lodash";
 
 export default function ChangesPage() {
   const [open, setOpen] = useState(null);
@@ -132,9 +104,16 @@ export default function ChangesPage() {
     loadData();
   };
 
+  const debouncedChangeHandler = useMemo(() => {
+    const changeHandler = (event) => {
+      handleFilterByName(event);
+    };
+
+    return debounce(changeHandler, 500);
+  }, []);
   const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
+    console.log(event.target.value);
+    loadData();
   };
 
   const handleCancel = () => {
@@ -168,7 +147,7 @@ export default function ChangesPage() {
         </Stack>
 
         <Card>
-          <SearchBar numSelected={selectedRows.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <SearchBar numSelected={selectedRows.length} filterName={filterName} onFilterName={debouncedChangeHandler} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
