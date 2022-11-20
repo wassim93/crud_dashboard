@@ -13,7 +13,7 @@ export const changeCells = [
     id: "impact",
     label: "Impact",
     type: "text",
-    sortable: false,
+    sortable: true,
     dbName: "impact",
   },
   {

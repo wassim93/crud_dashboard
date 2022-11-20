@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from "@mui/material";
+import TableRowLoader from "../loader/TableRowLoader";
 
 function TableHeader({ cells, hasCheckbox, hasActions, sortDirection, sortAction, sortBy, onSelectAllClick }) {
   return (
@@ -15,16 +16,12 @@ function TableHeader({ cells, hasCheckbox, hasActions, sortDirection, sortAction
 
         {cells.map((cell, index) => (
           <TableCell key={index} sortDirection={sortDirection}>
-            <TableSortLabel
-              active={cell.sortable}
-              direction={sortBy === cell.dbName ? sortDirection : "desc"}
-              onClick={() => sortAction(cell.dbName)}
-            >
+            <TableSortLabel active={true} direction={sortBy === cell.dbName ? sortDirection : "desc"} onClick={() => sortAction(cell.dbName)}>
               {cell.label}
             </TableSortLabel>
           </TableCell>
         ))}
-        {hasActions && <TableCell padding="checkbox">Action</TableCell>}
+        {hasActions && <TableCell padding="normal">Action</TableCell>}
       </TableRow>
     </TableHead>
   );

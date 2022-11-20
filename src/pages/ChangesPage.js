@@ -1,5 +1,5 @@
 import { filter } from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // @mui
 import { Card, Table, Stack, Button, Popover, MenuItem, Container, Typography, TableContainer, TablePagination } from "@mui/material";
 // components
@@ -65,6 +65,18 @@ export default function ChangesPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    loadData();
+    return () => {};
+  }, []);
+
+  const loadData = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
 
   const handleClickOpen = () => {
     setIsDialogOpen(true);
@@ -86,6 +98,7 @@ export default function ChangesPage() {
     const isAsc = orderBy === key && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(key);
+    loadData();
   };
 
   const handleSelectAllClick = (event) => {
@@ -176,6 +189,7 @@ export default function ChangesPage() {
                 <TableBodyContent
                   data={changeData}
                   cells={changeCells}
+                  isLoading={isLoading}
                   hasCheckbox
                   updateSelectedAction={handleClick}
                   hasActions
