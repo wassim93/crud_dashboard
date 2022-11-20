@@ -6,7 +6,6 @@ import { Card, Table, Stack, Button, Popover, MenuItem, Container, Typography, T
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
 // mock
-import USERLIST from "../_mock/user";
 import CustomDialog from "../components/dialog/CustomDialog";
 import CancelButton from "../components/buttons/CancelButton";
 import { Form, Formik } from "formik";
@@ -66,6 +65,7 @@ export default function ChangesPage() {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
   useEffect(() => {
     loadData();
     return () => {};
@@ -75,6 +75,7 @@ export default function ChangesPage() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
+      setData(changeData);
     }, 3000);
   };
 
@@ -104,7 +105,7 @@ export default function ChangesPage() {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       setIsAllChecked(true);
-      setSelectedRows(changeData);
+      setSelectedRows(data);
       return;
     }
     setIsAllChecked(false);
@@ -122,23 +123,19 @@ export default function ChangesPage() {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    loadData();
   };
 
   const handleChangeRowsPerPage = (event) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
+    loadData();
   };
 
   const handleFilterByName = (event) => {
     setPage(0);
     setFilterName(event.target.value);
   };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
 
   const handleCancel = () => {
     setIsDialogOpen(false);
@@ -187,48 +184,15 @@ export default function ChangesPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBodyContent
-                  data={changeData}
+                  data={data}
                   cells={changeCells}
                   isLoading={isLoading}
                   hasCheckbox
                   updateSelectedAction={handleClick}
                   hasActions
                   handleActionClick={handleOpenMenu}
-                  // isRowChecked={isAllChecked ? true : isRowChecked}
                   selectedRows={selectedRows}
-                  // selectedRows={selectedRows}
                 />
-                {/*</Table>
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody> */}
-
-                {/* {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: "center",
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -236,7 +200,7 @@ export default function ChangesPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={data.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
