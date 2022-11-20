@@ -1,4 +1,3 @@
-import { filter } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 // @mui
 import { Card, Table, Stack, Button, Popover, MenuItem, Container, Typography, TableContainer, TablePagination } from "@mui/material";
@@ -112,7 +111,7 @@ export default function ChangesPage() {
     return debounce(changeHandler, 500);
   }, []);
   const handleFilterByName = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     loadData();
   };
 
