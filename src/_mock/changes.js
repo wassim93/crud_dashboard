@@ -1,4 +1,4 @@
-import TeamComponent from "../components/pages-components/changes-page-component/TeamComponent";
+import TeamComponent from "../components/pages-components/changes-page/datatable-components/TeamComponent";
 
 export const changeCells = [
   {
@@ -37,7 +37,7 @@ export const changeData = [
     id: "1",
     team: "team row1",
     impact: "impact row1",
-    date: "date row1",
+    date: "2022-11-23",
     description: "desc row1",
   },
   {

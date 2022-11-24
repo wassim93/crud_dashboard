@@ -5,12 +5,7 @@ export default function CustomDialog({ open, handleClose, title, children }) {
   return (
     <Dialog
       scroll={"paper"}
-      PaperProps={{
-        sx: {
-          width: "50%",
-          maxHeight: 400,
-        },
-      }}
+      PaperProps={{ sx: { width: "600px", maxHeight: 600 } }}
       open={open}
       onClose={handleClose}
       aria-labelledby="scroll-dialog-title"

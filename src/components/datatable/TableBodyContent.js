@@ -43,7 +43,7 @@ function TableBodyContent({ cells, data, isLoading, hasCheckbox, updateSelectedA
                   ))}
                   {hasActions && (
                     <TableCell align="inherit">
-                      <ActionsCell handleActionClick={handleActionClick} />
+                      <ActionsCell handleActionClick={handleActionClick} row={row} />
                     </TableCell>
                   )}
                 </TableRow>

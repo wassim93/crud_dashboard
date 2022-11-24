@@ -11,6 +11,7 @@ const ButtonWrapper = ({ children, ...otherProps }) => {
 
   const configButton = {
     variant: "contained",
+    text: "text",
     // color: "primary",
     ...otherProps,
     // fullWidth: true,

@@ -1,23 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 // @mui
-import { Card, Table, Stack, Button, Popover, MenuItem, Container, Typography, TableContainer, TablePagination } from "@mui/material";
+import { Card, Table, Stack, Button, MenuItem, Container, Typography, TableContainer, TablePagination } from "@mui/material";
 // components
 import Iconify from "../components/iconify";
 import Scrollbar from "../components/scrollbar";
 // mock
 import CustomDialog from "../components/dialog/CustomDialog";
-import CancelButton from "../components/buttons/CancelButton";
-import { Form, Formik } from "formik";
 import * as yup from "yup";
-import TextfieldWrapper from "../components/FormUI/Textfield";
-import ButtonWrapper from "../components/FormUI/Buttons";
-import DateTimePicker from "../components/FormUI/DatePicker";
-
 import { changeCells, changeData } from "../_mock/changes";
 import TableHeader from "../components/datatable/TableHeader";
 import TableBodyContent from "../components/datatable/TableBodyContent";
 import SearchBar from "../components/search-bar/SearchBar";
 import { debounce } from "lodash";
+import AddOrEditChange from "../components/pages-components/changes-page/AddOrEditChange";
+import { CustomPopover } from "../components/popover/CustomPopover";
 
 export default function ChangesPage() {
   const [open, setOpen] = useState(null);
@@ -36,7 +32,16 @@ export default function ChangesPage() {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [data, setData] = useState([]);
+  const [initialValues, setInitialValues] = useState({
+    description: "",
+    team: "",
+    impact: "",
+    dateP: "",
+  });
+
   useEffect(() => {
     loadData();
     return () => {};
@@ -50,20 +55,46 @@ export default function ChangesPage() {
     }, 3000);
   };
 
-  const handleClickOpen = () => {
+  const resetParams = () => {
+    setOpen(null);
+    setIsEditMode(false);
+    setIsDeleteMode(false);
+    setInitialValues({});
+  };
+
+  const handleClickOpen = (type) => {
     setIsDialogOpen(true);
+    switch (type) {
+      case "edit":
+        setIsEditMode(true);
+        break;
+      case "delete":
+        setIsDeleteMode(true);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleClose = () => {
+    resetParams();
     setIsDialogOpen(false);
   };
+  const handlePopupTitle = () => {
+    console.log("okkk");
+    if (isDeleteMode) return "Supprimer une change";
+    else if (isEditMode) return "Modifier une change";
+    else return "Ajouter une change";
+  };
 
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (data, event) => {
+    setInitialValues({ description: data.description, team: data.team, impact: data.impact, dateP: data.date });
     setOpen(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
-    setOpen(null);
+    resetParams();
   };
 
   const handleRequestSort = (key) => {
@@ -126,13 +157,6 @@ export default function ChangesPage() {
     dateP: yup.date().required("Date Required"),
   });
 
-  const initialValues = {
-    description: "",
-    team: "",
-    impact: "",
-    dateP: "",
-  };
-
   return (
     <>
       <Container>
@@ -187,67 +211,18 @@ export default function ChangesPage() {
         </Card>
       </Container>
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            "& .MuiMenuItem-root": {
-              px: 1,
-              typography: "body2",
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
+      <CustomPopover open={open} handleCloseMenu={handleCloseMenu}>
+        <MenuItem onClick={() => handleClickOpen("edit")}>
           <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-
-        <MenuItem sx={{ color: "error.main" }}>
+        <MenuItem sx={{ color: "error.main" }} onClick={() => handleClickOpen("delete")}>
           <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
-      </Popover>
-      <CustomDialog open={isDialogOpen} handleClose={handleClose} title={"Ajouter un change"}>
-        <Formik
-          initialValues={{
-            ...initialValues,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
-        >
-          <Form>
-            <Stack spacing={3} mx={2} my={2}>
-              <TextfieldWrapper name="description" label="Description" multiline rows={6} />
-              <TextfieldWrapper name="team" label="Team" />
-              <TextfieldWrapper name="impact" label="Impact" />
-              <DateTimePicker name="dateP" />
-
-              <Stack direction="row" justifyContent="end" spacing={2}>
-                <CancelButton text="Cancel" handleClick={handleCancel} />
-                <ButtonWrapper
-                  sx={{
-                    background: "#43C58A",
-                    "&:hover": {
-                      background: "#3AE6A2",
-                    },
-                  }}
-                >
-                  Save
-                </ButtonWrapper>
-              </Stack>
-            </Stack>
-          </Form>
-        </Formik>
+      </CustomPopover>
+      <CustomDialog open={isDialogOpen} handleClose={handleClose} title={handlePopupTitle()}>
+        <AddOrEditChange initialValues={initialValues} validationSchema={validationSchema} handleCancel={handleCancel} />
       </CustomDialog>
     </>
   );
